@@ -60,3 +60,16 @@ exports.postOneScream = (req, res) => {
       console.error(err);
     });
 };
+
+exports.getScream = (req, res) => {
+  let screamData = [];
+  db.doc(`/screams/${req.params.screamId}`)
+    .get()
+    .then(doc => {
+      if (!doc.exists) {
+        return res.status(404).json({ error: "Scream not Found" });
+      }
+      screamData = doc.data();
+      screamData.screamId = doc.id;
+    });
+};
